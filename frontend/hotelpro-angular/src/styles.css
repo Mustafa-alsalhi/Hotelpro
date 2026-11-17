@@ -1,0 +1,104 @@
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+
+:root {
+  --hp-navy: #0f2540;
+  --hp-navy-light: #1a365d;
+  --hp-navy-dark: #09182b;
+  --hp-gold: #c9a227;
+  --hp-gold-light: #e4c766;
+  --hp-gold-soft: rgba(201, 162, 39, 0.14);
+  --hp-bg: #f4f6f9;
+  --hp-surface: #ffffff;
+  --hp-border: #e2e8f0;
+  --hp-text: #1e293b;
+  --hp-muted: #64748b;
+  --hp-success: #15803d;
+  --hp-warning: #b45309;
+  --hp-danger: #b91c1c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: var(--hp-bg);
+  color: var(--hp-text);
+  font-family: 'Cairo', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.hp-card {
+  background: var(--hp-surface);
+  border: 1px solid var(--hp-border);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(15, 37, 64, 0.05);
+}
+
+.hp-btn-primary {
+  background-color: var(--hp-navy) !important;
+  color: #ffffff !important;
+}
+
+.hp-btn-gold {
+  background-color: var(--hp-gold) !important;
+  color: var(--hp-navy-dark) !important;
+  font-weight: 600 !important;
+}
+
+.hp-page-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.hp-page-title {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--hp-navy);
+}
+
+.hp-page-subtitle {
+  margin: 2px 0 0;
+  font-size: 0.9rem;
+  color: var(--hp-muted);
+}
+
+.hp-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.hp-badge-success {
+  background: #dcfce7;
+  color: var(--hp-success);
+}
+
+.hp-badge-danger {
+  background: #fee2e2;
+  color: var(--hp-danger);
+}
+
+.hp-badge-gold {
+  background: var(--hp-gold-soft);
+  color: #8a6d11;
+}
+
+.hp-snack-success {
+  --mdc-snackbar-container-color: #15803d;
+  --mdc-snackbar-supporting-text-color: #ffffff;
+}
+
+.hp-snack-error {
+  --mdc-snackbar-container-color: #b91c1c;
+  --mdc-snackbar-supporting-text-color: #ffffff;
+}
