@@ -1,146 +1,148 @@
-# HotelPro — Enterprise Hotel Management System
+# HotelPro — نظام إدارة الفنادق المتكامل (Enterprise Hotel Management System)
 
 [![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular)](https://angular.dev/)
 [![SQL Server](https://img.shields.io/badge/SQL%20Server-EF%20Core%2010-CC2927?logo=microsoftsqlserver)](https://learn.microsoft.com/ef/core/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript)](https://www.typescriptlang.org/)
-[![Architecture](https://img.shields.io/badge/Architecture-Clean%20Architecture-0F2540)](#architecture)
+[![Architecture](https://img.shields.io/badge/Architecture-Clean%20Architecture-0F2540)](#البنية-المعمارية-architecture)
 
-**HotelPro** is a full-stack, enterprise-grade **Hotel Management System (HMS)** engineered with **ASP.NET Core 10 Web API** (Clean Architecture), **Entity Framework Core + SQL Server**, and **Angular 21** (Standalone Components, Angular Material, Signals, and bilingual **Arabic/English** UI with automatic **RTL/LTR** layout switching).
+**HotelPro** هو نظام مؤسسي متكامل لإدارة الفنادق والمنشآت السياحية (**HMS**)، تم بناؤه باستخدام **ASP.NET Core 10 Web API** وفق معمارية **Clean Architecture** مع **Entity Framework Core + SQL Server** في الواجهة الخلفية، و**Angular 21** (Standalone Components + Angular Material + Signals) في الواجهة الأمامية، مع دعم كامل للغتين **العربية والإنجليزية (AR/EN)** والتحويل التلقائي لاتجاه التصميم (**RTL / LTR**).
 
-Designed to handle real-world hospitality workflows end-to-end—from reservations and dynamic pricing to front-desk check-in/out, housekeeping, maintenance, idempotent billing, HR, inventory control, and executive analytics.
-
----
-
-## Key Engineering Highlights
-
-- **Clean Architecture & Separation of Concerns**: Strict layering across `Domain`, `Application`, `Infrastructure`, `API`, and `Tests` projects with zero circular dependencies.
-- **Fine-Grained RBAC & JWT Security**:
-  - **9 predefined operational roles** and **50+ granular permissions** (`PermissionsCatalog`) enforced via custom `PermissionAuthorizationHandler` and `PermissionPolicyProvider` on the backend, and route guards + `*hasPermission` structural directive on the frontend.
-  - **JWT Bearer Authentication + Refresh Token Rotation** with reuse detection and revocation tracking, plus `AuditLog` tracking for critical actions.
-  - Centralized `GlobalExceptionHandlerMiddleware` returning RFC-compliant error responses without leaking internal stack traces.
-- **Transactional Integrity & Concurrency Safety**:
-  - **Double-booking prevention**: Room reservation creation and modifications execute inside `IsolationLevel.Serializable` database transactions with explicit overlap checks and locked nightly rates.
-  - **Idempotent financial transactions**: Payments support `IdempotencyKey` deduplication and immutable reversal records inside `Serializable` transactions.
-  - **Ledger-backed inventory**: Stock quantities are mutated exclusively through `StockTransaction` records and Purchase Order receipts with insufficient-stock guards.
-- **Modular EF Core Migrations**: Database schema evolution is cleanly partitioned into **7 module-based migrations** (Identity, Hotel/Rooms/Guests, Rates/Reservations, Operations, Billing/Finance, HR/Inventory, Notifications) for maintainability and targeted rollbacks.
-- **Modern Angular 21 Frontend**:
-  - 100% **Standalone Components** with lazy-loaded feature routes and reactive **Angular Signals** state management.
-  - Custom **Navy (`#0F2540`) / Gold (`#C9A227`) / White** hospitality theme built on Angular Material.
-  - Full **Arabic / English (`AR/EN`)** internationalization (`TranslationService`) with live **RTL / LTR** directionality switching.
-  - Multiple operational views including Table, Card Grid, Interactive Floor Map, and Booking Calendar.
-- **Automated Integration Testing**: End-to-end API integration test suite (`HotelPro.Tests`) powered by `WebApplicationFactory<Program>` covering security, RBAC, reservations, operations, billing, HR, inventory, and reporting.
+صُمم النظام ليغطي دورة العمل الفندقية بالكامل من الحجوزات والتسعير الديناميكي إلى الاستقبال، التدبير المنزلي، الصيانة، الفوترة والمدفوعات، الموارد البشرية، المخزون، ولوحة المؤشرات والتقارير التنفيذية.
 
 ---
 
-## Architecture
+## أبرز المميزات الهندسية (Engineering Highlights)
+
+- **معمارية نظيفة وفصل المسؤوليات (Clean Architecture)**:
+  تقسيم واضح بين الطبقات (`Domain`, `Application`, `Infrastructure`, `API`, `Tests`) دون أي تبعيات دائرية.
+- **أمان متقدم وصلاحيات دقيقة (RBAC & JWT Security)**:
+  - **9 أدوار تشغيلية** وأكثر من **50 صلاحية دقيقة** (`PermissionsCatalog`) تُطبق عبر `PermissionAuthorizationHandler` و`PermissionPolicyProvider` في الخادم، وعبر Route Guards وDirective `*hasPermission` في الواجهة الأمامية.
+  - مصادقة **JWT Bearer** مع تدوير رمز التحديث (**Refresh Token Rotation**)، واكتشاف إعادة استخدام الرموز وإلغائها، وتسجيل العمليات الحساسة في `AuditLog`.
+  - معالج استثناءات مركزي (`GlobalExceptionHandlerMiddleware`) لإرجاع أخطاء موحدة وآمنة دون تسريب تفاصيل الخادم.
+- **تكامل المعاملات ومنع التضارب (Transactional Integrity & Concurrency)**:
+  - **منع الحجز المزدوج (Double-Booking Prevention)**: إنشاء وتعديل الحجوزات يتم داخل معاملات قاعدة بيانات بمستوى عزل `IsolationLevel.Serializable` مع فحص التداخل وتثبيت الأسعار الليلية.
+  - **معاملات مالية آمنة (Idempotent Billing)**: دعم مفتاح منع التكرار (`IdempotencyKey`) في المدفوعات وسجلات عكس الدفع غير القابلة للتعديل داخل معاملات `Serializable`.
+  - **إدارة مخزون مضبوطة بالسجلات**: تعديل الكميات يتم حصراً عبر حركات المخزون (`StockTransaction`) واستلام أوامر الشراء مع منع السحب عند عدم توفر الرصيد.
+- **ترحيلات قاعدة بيانات معيارية (Modular EF Core Migrations)**:
+  تقسيم تغييرات قاعدة البيانات إلى **7 ملفات Migration مستقلة** حسب الوحدات (الهوية، الفندق والغرف، الأسعار والحجوزات، العمليات، الفوترة والمالية، الموارد البشرية والمخزون، الإشعارات) لسهولة الصيانة والتطوير والتراجع عند الحاجة.
+- **واجهة أمامية حديثة بـ Angular 21**:
+  - استخدام **Standalone Components** مع التحميل الكسول للمسارات (Lazy Loading) وإدارة الحالة التفاعلية عبر **Angular Signals**.
+  - هوية بصرية احترافية مخصصة للضيافة (**كحلي `#0F2540` / ذهبي `#C9A227` / أبيض**) مبنية على **Angular Material**.
+  - دعم ثنائي اللغة (**عربي / إنجليزي**) عبر `TranslationService` مع تبديل فوري للاتجاه (**RTL / LTR**).
+  - طرق عرض متعددة للغرف والحجوزات: الجداول، البطاقات، **خريطة الطوابق (Floor Map)**، و**تقويم الحجوزات التفاعلي (Booking Calendar)**.
+- **اختبارات تكامل مؤتمتة (Integration Tests)**:
+  مجموعة اختبارات شاملة (`HotelPro.Tests`) باستخدام `WebApplicationFactory<Program>` تغطي الأمان، الصلاحيات، الحجوزات، العمليات، الفوترة، الموارد البشرية، المخزون، والتقارير.
+
+---
+
+## البنية المعمارية (Architecture)
 
 ```text
 HotelPro
 ├── backend/
-│   ├── HotelPro.Domain/           # Entities, Enums, Domain Constants (PermissionsCatalog, RoleNames)
-│   ├── HotelPro.Application/      # Service Interfaces, DTOs, Business Contracts
-│   ├── HotelPro.Infrastructure/   # EF Core DbContext, Migrations, Identity/JWT, Service Implementations, DbInitializer
-│   ├── HotelPro.API/              # REST Controllers, Authorization Policies, Exception Middleware, Swagger
-│   └── HotelPro.Tests/            # Integration Tests (WebApplicationFactory<Program>)
+│   ├── HotelPro.Domain/           # الكيانات (Entities)، التعدادات (Enums)، الثوابت (PermissionsCatalog, RoleNames)
+│   ├── HotelPro.Application/      # واجهات الخدمات، كائنات نقل البيانات (DTOs)، عقود الأعمال
+│   ├── HotelPro.Infrastructure/   # DbContext، ملفات Migrations، الهوية وJWT، تنفيذ الخدمات، DbInitializer
+│   ├── HotelPro.API/              # وحدات التحكم (Controllers)، سياسات الصلاحيات، Middleware، Swagger
+│   └── HotelPro.Tests/            # اختبارات التكامل (WebApplicationFactory<Program>)
 ├── frontend/
-│   └── hotelpro-angular/          # Angular 21 SPA (Standalone Components, Signals, Material, AR/EN i18n)
-├── docs/                          # System Architecture & Design Documentation
+│   └── hotelpro-angular/          # تطبيق Angular 21 (Standalone Components, Signals, Material, AR/EN i18n)
+├── docs/                          # وثائق التحليل والتصميم المعماري
 └── README.md
 ```
 
 ---
 
-## Tech Stack
+## التقنيات المستخدمة (Tech Stack)
 
-| Layer | Technologies |
+| الطبقة | التقنيات والأدوات |
 |---|---|
-| **Backend** | ASP.NET Core 10 Web API, C#, Clean Architecture, Swashbuckle (Swagger/OpenAPI) |
-| **Data & ORM** | Entity Framework Core 10, SQL Server (`LocalDB` / SQL Server), Code-First Modular Migrations |
-| **Security** | ASP.NET Core Identity, JWT Bearer, Refresh Token Rotation, Custom Policy-Based RBAC |
-| **Frontend** | Angular 21, TypeScript, Angular Material 21, Angular Signals, RxJS, HttpClient Interceptors |
-| **i18n & UX** | Custom AR/EN Translation Engine, Dynamic RTL/LTR Layout, Responsive Sidenav & Topbar Notifications |
-| **Testing** | xUnit, `Microsoft.AspNetCore.Mvc.Testing` (`WebApplicationFactory`), EF Core InMemory |
+| **الواجهة الخلفية (Backend)** | ASP.NET Core 10 Web API, C#, Clean Architecture, Swashbuckle (Swagger/OpenAPI) |
+| **قاعدة البيانات والـ ORM** | Entity Framework Core 10, SQL Server (`LocalDB` / SQL Server), Code-First Modular Migrations |
+| **الأمان والصلاحيات** | ASP.NET Core Identity, JWT Bearer, Refresh Token Rotation, Policy-Based RBAC |
+| **الواجهة الأمامية (Frontend)** | Angular 21, TypeScript, Angular Material 21, Angular Signals, RxJS, HttpClient Interceptors |
+| **اللغة وتجربة المستخدم** | نظام ترجمة AR/EN مخصص، تبديل ديناميكي RTL/LTR، قائمة جانبية متجاوبة وجرس إشعارات |
+| **الاختبارات (Testing)** | xUnit, `Microsoft.AspNetCore.Mvc.Testing` (`WebApplicationFactory`), EF Core InMemory |
 
 ---
 
-## System Modules & Features
+## وحدات ومميزات النظام
 
-1. **Identity, RBAC & Audit**:
-   - User management, 9 operational roles (`SuperAdmin`, `HotelManager`, `Receptionist`, `Accountant`, `HousekeepingSupervisor`, `HousekeepingStaff`, `MaintenanceManager`, `MaintenanceTechnician`, `ServiceStaff`), 50+ permissions, and audit logging.
-2. **Hotel Setup, Rooms & Guests**:
-   - Hotel profile & tax/currency configuration, Room Types, Amenities, Rooms (with Table, Card, and **Floor Map** views), and Guest profiles with document tracking.
-3. **Dynamic Rates, Reservations & Calendar**:
-   - Seasonal rate plans, weekend multipliers, long-stay discounts, live quote calculator, overlap-safe multi-room reservations, status history tracking, and an interactive **Booking Calendar**.
-4. **Hotel Operations**:
-   - **Front Desk**: Check-In / Check-Out workflows with room status synchronization.
-   - **Guest Services**: Service catalog & guest service orders.
-   - **Housekeeping**: Room cleaning task assignment and status tracking.
-   - **Maintenance**: Maintenance requests, technician assignment, and room restoration (`OutOfService` management).
-5. **Billing, Payments & Finance**:
-   - Folio/Invoice generation with line items, idempotent payment processing & payment reversals, expense categories, operating expenses, and revenue tracking.
-6. **HR & Inventory Management**:
-   - **HR**: Departments, employee directory, attendance records, and leave request approvals.
-   - **Inventory**: Categories, stock items, suppliers, purchase orders, PO receiving, and auditable stock transactions.
-7. **Executive Dashboard, Reports & Notifications**:
-   - Live KPIs (occupancy rate excluding `OutOfService` rooms, ADR, revenue, active reservations), charts, Occupancy/Reservations/Financial reports with **UTF-8 CSV export**, and a real-time **Topbar Notification Bell** with unread counter and mark-as-read support.
+1. **الهوية والصلاحيات والتدقيق (Identity, RBAC & Audit)**:
+   - إدارة المستخدمين، 9 أدوار (`SuperAdmin`, `HotelManager`, `Receptionist`, `Accountant`, `HousekeepingSupervisor`, `HousekeepingStaff`, `MaintenanceManager`, `MaintenanceTechnician`, `ServiceStaff`)، أكثر من 50 صلاحية، وسجل تدقيق للعمليات.
+2. **إعدادات الفندق والغرف والنزلاء**:
+   - بيانات الفندق وإعدادات الضرائب والعملة، أنواع الغرف، المرافق، إدارة الغرف (جدول / بطاقات / خريطة الطوابق)، وملفات النزلاء والوثائق.
+3. **التسعير الديناميكي والحجوزات والتقويم**:
+   - خطط أسعار موسمية، مضاعفات عطلة نهاية الأسبوع، خصومات الإقامة الطويلة، حاسبة تسعير فورية، حجوزات متعددة الغرف محمية من التداخل، سجل تغييرات الحالة، وتقويم حجوزات تفاعلي.
+4. **العمليات الفندقية (Operations)**:
+   - **الاستقبال (Front Desk)**: تسجيل الدخول (Check-In) والمغادرة (Check-Out) مع مزامنة حالة الغرف.
+   - **خدمات النزلاء (Guest Services)**: كتالوج الخدمات وطلبات النزلاء.
+   - **التدبير المنزلي (Housekeeping)**: إسناد مهام تنظيف الغرف ومتابعة حالتها.
+   - **الصيانة (Maintenance)**: بلاغات الأعطال، تعيين الفنيين، وإدارة حالة `OutOfService`.
+5. **الفواتير والمدفوعات والمالية (Billing & Finance)**:
+   - إصدار الفواتير وبنودها، تحصيل المدفوعات وعكسها بشكل آمن ومقاوم للتكرار، تصنيفات المصروفات، المصروفات التشغيلية، وسجلات الإيرادات.
+6. **الموارد البشرية والمخزون (HR & Inventory)**:
+   - **الموارد البشرية**: الأقسام، سجل الموظفين، الحضور والانصراف، وطلبات الإجازات واعتمادها.
+   - **المخزون والمشتريات**: التصنيفات، الأصناف، الموردون، أوامر الشراء، استلام الشحنات، وسجل حركات المخزون.
+7. **لوحة المؤشرات والتقارير والإشعارات**:
+   - مؤشرات أداء حية (نسبة الإشغال مع استبعاد غرف الصيانة `OutOfService`، الإيرادات، الحجوزات النشطة)، رسوم بيانية، تقارير الإشغال والحجوزات والمالية مع **تصدير CSV بترميز UTF-8**، وجرس إشعارات في الشريط العلوي مع عداد غير المقروء.
 
 ---
 
-## Getting Started
+## التشغيل والإعداد محلياً (Getting Started)
 
-### Prerequisites
+### المتطلبات الأساسية
+- [.NET 10 SDK](https://dotnet.microsoft.com/) (الإصدار `10.0+`)
+- [Node.js](https://nodejs.org/) (الإصدار `20+`) و npm
+- SQL Server أو SQL Server LocalDB (`(localdb)\MSSQLLocalDB`)
 
-- [.NET 10 SDK](https://dotnet.microsoft.com/) (`10.0+`)
-- [Node.js](https://nodejs.org/) (`20+`) & npm
-- SQL Server / SQL Server LocalDB (`(localdb)\MSSQLLocalDB`)
+### 1. إعداد مفتاح JWT وقاعدة البيانات
 
-### 1. Configure Secrets & Database
-
-Default SQL Server LocalDB connection string is configured in `backend/HotelPro.API/appsettings.json`.
-For local development, configure your JWT secret via .NET User Secrets (never commit production secrets):
+سلسلة الاتصال الافتراضية لـ LocalDB موجودة في `backend/HotelPro.API/appsettings.json`.
+للتطوير المحلي، قم بتعيين مفتاح `Jwt:SecretKey` عبر User Secrets (لا تقم أبداً برفع أسرار الإنتاج إلى المستودع):
 
 ```powershell
 cd backend/HotelPro.API
 dotnet user-secrets set "Jwt:SecretKey" "YOUR_STRONG_SECRET_KEY_AT_LEAST_32_CHARS"
 ```
 
-### 2. Apply EF Core Migrations
+### 2. تطبيق ترحيلات قاعدة البيانات (EF Core Migrations)
 
 ```powershell
 cd backend
 dotnet ef database update --project HotelPro.Infrastructure --startup-project HotelPro.API
 ```
 
-### 3. Run the Backend API
+### 3. تشغيل الواجهة الخلفية (Backend API)
 
 ```powershell
 cd backend/HotelPro.API
 dotnet run
 ```
-- **API Base URL**: `http://localhost:5296`
-- **Swagger UI (Development)**: `http://localhost:5296/swagger`
+- **رابط الـ API**: `http://localhost:5296`
+- **واجهة Swagger (في بيئة التطوير)**: `http://localhost:5296/swagger`
 
-### 4. Run the Angular Frontend
+### 4. تشغيل الواجهة الأمامية (Angular Frontend)
 
 ```powershell
 cd frontend/hotelpro-angular
 npm install
 npm start
 ```
-- **Frontend URL**: `http://localhost:4200`
+- **رابط التطبيق**: `http://localhost:4200`
 
 ---
 
-## Verification & Testing
+## الاختبارات والتحقق من البناء
 
-### Backend Integration Tests
+### اختبارات الواجهة الخلفية
 ```powershell
 cd backend
 dotnet test
 ```
 
-### Frontend Type Check & Production Build
+### فحص الأنواع وبناء الإنتاج للواجهة الأمامية
 ```powershell
 cd frontend/hotelpro-angular
 npx tsc --noEmit -p tsconfig.app.json
@@ -149,11 +151,11 @@ npm run build
 
 ---
 
-## Development Demo Accounts
+## حسابات التجربة التطويرية (Development Demo Accounts)
 
-When running in `Development` mode, `DbInitializer` seeds sample accounts for testing role-based access across all 9 roles:
+عند التشغيل في بيئة `Development`، يقوم `DbInitializer` بإنشاء حسابات تجريبية لجميع الأدوار الـ 9 لتسهيل الاختبار:
 
-| Role | Email | Password |
+| الدور | البريد الإلكتروني | كلمة المرور |
 |---|---|---|
 | `SuperAdmin` | `superadmin@hotelpro.local` | `Admin@12345` |
 | `HotelManager` | `manager@hotelpro.local` | `Manager@12345` |
