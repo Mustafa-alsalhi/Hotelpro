@@ -2,6 +2,14 @@ namespace HotelPro.Application.DTOs.Dashboard;
 
 public record ChartSeriesPointDto(string Label, decimal Value, decimal SecondaryValue = 0);
 
+public record RoomTypePerformanceDto(
+    string RoomTypeName,
+    int TotalRooms,
+    int OccupiedRooms,
+    int BookingsCount,
+    decimal Revenue,
+    decimal OccupancyPercent);
+
 public record DashboardSummaryDto(
     int TotalRooms,
     int AvailableRooms,
@@ -24,6 +32,8 @@ public record DashboardSummaryDto(
     IReadOnlyList<ChartSeriesPointDto> RevenueVsExpenseSeries,
     IReadOnlyList<ChartSeriesPointDto> BookingsBySource,
     IReadOnlyList<ChartSeriesPointDto> RoomTypeDistribution,
-    IReadOnlyList<ChartSeriesPointDto> TopServices
+    IReadOnlyList<ChartSeriesPointDto> TopServices,
+    IReadOnlyList<ChartSeriesPointDto> MonthlyRevenueSeries,
+    IReadOnlyList<ChartSeriesPointDto> BookingsByStatus,
+    IReadOnlyList<RoomTypePerformanceDto> RoomTypePerformance
 );
-

@@ -4,6 +4,15 @@ export interface ChartSeriesPointDto {
   secondaryValue: number;
 }
 
+export interface RoomTypePerformanceDto {
+  roomTypeName: string;
+  totalRooms: number;
+  occupiedRooms: number;
+  bookingsCount: number;
+  revenue: number;
+  occupancyPercent: number;
+}
+
 export interface DashboardSummaryDto {
   totalRooms: number;
   availableRooms: number;
@@ -27,5 +36,7 @@ export interface DashboardSummaryDto {
   bookingsBySource: ChartSeriesPointDto[];
   roomTypeDistribution: ChartSeriesPointDto[];
   topServices: ChartSeriesPointDto[];
+  monthlyRevenueSeries: ChartSeriesPointDto[];
+  bookingsByStatus: ChartSeriesPointDto[];
+  roomTypePerformance: RoomTypePerformanceDto[];
 }
-
