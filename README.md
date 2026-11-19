@@ -10,7 +10,37 @@
 
 صُمم النظام ليغطي دورة العمل الفندقية بالكامل من الحجوزات والتسعير الديناميكي إلى الاستقبال، التدبير المنزلي، الصيانة، الفوترة والمدفوعات، الموارد البشرية، المخزون، ولوحة المؤشرات والتقارير التنفيذية.
 
-![HotelPro Dashboard](docs/screenshots/dashboard.png)
+---
+
+## لقطات من النظام (System Screenshots)
+
+| تسجيل الدخول (Login) | لوحة المؤشرات (Dashboard) |
+|---|---|
+| ![Login](docs/screenshots/login.png) | ![Dashboard](docs/screenshots/dashboard.png) |
+
+| إدارة الحجوزات (Reservations) | الاستقبال: الدخول والمغادرة (Check-In / Check-Out) |
+|---|---|
+| ![Reservations](docs/screenshots/reservations.png) | ![Check-In / Check-Out](docs/screenshots/check-in-check-out.png) |
+
+| إدارة الغرف وخريطة الطوابق (Rooms Management) | إدارة النزلاء (Guests) |
+|---|---|
+| ![Rooms Management](docs/screenshots/rooms-management.png) | ![Guests](docs/screenshots/guests.png) |
+
+| التدبير المنزلي (Housekeeping) | الصيانة (Maintenance) |
+|---|---|
+| ![Housekeeping](docs/screenshots/housekeeping.png) | ![Maintenance](docs/screenshots/maintenance.png) |
+
+| الفواتير والمدفوعات (Billing & Payments) | التقارير والتحليلات (Reports & Analytics) |
+|---|---|
+| ![Billing & Payments](docs/screenshots/billing-payments.png) | ![Reports & Analytics](docs/screenshots/reports-analytics.png) |
+
+| الموظفون والموارد البشرية (Employees & HR) | المخزون والمشتريات (Inventory) |
+|---|---|
+| ![Employees](docs/screenshots/employees.png) | ![Inventory](docs/screenshots/inventory.png) |
+
+| المستخدمون والصلاحيات (Users & Permissions) | دعم اللغتين العربية والإنجليزية (AR/EN Localization) |
+|---|---|
+| ![Users & Permissions](docs/screenshots/users-permissions.png) | ![Localization](docs/screenshots/localization.png) |
 
 ---
 
@@ -91,38 +121,6 @@ HotelPro
    - مؤشرات أداء حية (نسبة الإشغال مع استبعاد غرف الصيانة `OutOfService`، الإيرادات، الحجوزات النشطة)، رسوم بيانية، تقارير الإشغال والحجوزات والمالية مع **تصدير CSV بترميز UTF-8**، وجرس إشعارات في الشريط العلوي مع عداد غير المقروء.
 
 > للاطلاع على البنية الكاملة لقاعدة البيانات (48 جدولاً وعلاقاتها)، راجع: [مخطط قاعدة البيانات الكامل (ERD)](docs/02-database-erd.md)
-
----
-
-## لقطات من النظام (System Screenshots)
-
-| تسجيل الدخول (Login) | لوحة المؤشرات (Dashboard) |
-|---|---|
-| ![Login](docs/screenshots/login.png) | ![Dashboard](docs/screenshots/dashboard.png) |
-
-| إدارة الحجوزات (Reservations) | الاستقبال: الدخول والمغادرة (Check-In / Check-Out) |
-|---|---|
-| ![Reservations](docs/screenshots/reservations.png) | ![Check-In / Check-Out](docs/screenshots/check-in-check-out.png) |
-
-| إدارة الغرف وخريطة الطوابق (Rooms Management) | إدارة النزلاء (Guests) |
-|---|---|
-| ![Rooms Management](docs/screenshots/rooms-management.png) | ![Guests](docs/screenshots/guests.png) |
-
-| التدبير المنزلي (Housekeeping) | الصيانة (Maintenance) |
-|---|---|
-| ![Housekeeping](docs/screenshots/housekeeping.png) | ![Maintenance](docs/screenshots/maintenance.png) |
-
-| الفواتير والمدفوعات (Billing & Payments) | التقارير والتحليلات (Reports & Analytics) |
-|---|---|
-| ![Billing & Payments](docs/screenshots/billing-payments.png) | ![Reports & Analytics](docs/screenshots/reports-analytics.png) |
-
-| الموظفون والموارد البشرية (Employees & HR) | المخزون والمشتريات (Inventory) |
-|---|---|
-| ![Employees](docs/screenshots/employees.png) | ![Inventory](docs/screenshots/inventory.png) |
-
-| المستخدمون والصلاحيات (Users & Permissions) | دعم اللغتين العربية والإنجليزية (AR/EN Localization) |
-|---|---|
-| ![Users & Permissions](docs/screenshots/users-permissions.png) | ![Localization](docs/screenshots/localization.png) |
 
 ---
 
